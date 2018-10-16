@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SYM_Labo2</string>
+    <string name="asynchronousTransmission">Asynchronous Transmission</string>
+    <string name="delayedTransmission">Delayed Transmission</string>
+    <string name="JSONTransmission">JSON Transmission</string>
+    <string name="XMLTransmission">XML Transmission</string>
+    <string name="compressedTransmission">Compressed Transmission</string>
+</resources>
