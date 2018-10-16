@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/topText"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/topEditText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
         android:layout_alignParentTop="true"/>
 
     <Button
@@ -18,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/asynchronousTransmission"
-        android:layout_below="@+id/topText"/>
+        android:layout_below="@+id/topEditText"/>
 
     <Button
         android:id="@+id/delayedTransmissionButton"
@@ -28,25 +27,25 @@
         android:layout_below="@+id/asynchronousTransmissionButton"/>
 
     <Button
-        android:id="@+id/JSONTransmissionButton"
+        android:id="@+id/graphQLTransmissionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/JSONTransmission"
+        android:text="@string/graphQLTransmission"
         android:layout_below="@+id/delayedTransmissionButton"/>
 
     <Button
-        android:id="@+id/XMLTransmissionButton"
+        android:id="@+id/serializedTransmissionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/XMLTransmission"
-        android:layout_below="@+id/JSONTransmissionButton"/>
+        android:text="@string/serializedTransmission"
+        android:layout_below="@+id/graphQLTransmissionButton"/>
 
     <Button
         android:id="@+id/compressedTransmissionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/compressedTransmission"
-        android:layout_below="@+id/XMLTransmissionButton"/>
+        android:layout_below="@+id/serializedTransmissionButton"/>
 
 
 

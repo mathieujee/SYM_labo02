@@ -2,7 +2,7 @@
     <string name="app_name">SYM_Labo2</string>
     <string name="asynchronousTransmission">Asynchronous Transmission</string>
     <string name="delayedTransmission">Delayed Transmission</string>
-    <string name="JSONTransmission">JSON Transmission</string>
-    <string name="XMLTransmission">XML Transmission</string>
+    <string name="graphQLTransmission">GraphQL Transmission</string>
+    <string name="serializedTransmission">Serialized Transmission</string>
     <string name="compressedTransmission">Compressed Transmission</string>
 </resources>
