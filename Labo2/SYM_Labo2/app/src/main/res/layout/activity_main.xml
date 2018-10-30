@@ -6,17 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/topEditText"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"/>
-
     <Button
         android:id="@+id/asynchronousTransmissionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/asynchronousTransmission"
-        android:layout_below="@+id/topEditText"/>
+        android:layout_alignParentTop="true"/>
 
     <Button
         android:id="@+id/delayedTransmissionButton"
