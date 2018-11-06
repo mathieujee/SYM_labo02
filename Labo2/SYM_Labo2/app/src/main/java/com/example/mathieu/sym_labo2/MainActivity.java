@@ -17,4 +17,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SerializedTransmissionActivity.class);
         startActivity(intent);
     }
+
+    public void startGraphQLTransmission(View view){
+        Intent intent = new Intent(this, GraphQLTransmissionActivity.class);
+        startActivity(intent);
+    }
 }
+
