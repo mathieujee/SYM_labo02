@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SerializedTransmissionActivity">
+
+    <EditText
+        android:id="@+id/firstnameField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/firstnameField"
+        android:layout_alignParentTop="true" />
+
+    <EditText
+        android:id="@+id/lastnameField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/lastnameField"
+        android:layout_below="@id/firstnameField" />
+
+    <Button
+        android:id="@+id/JSONTransmissionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/JSONTransmissionButton"
+        android:layout_below="@+id/lastnameField" />
+
+    <Button
+        android:id="@+id/XMLTransmissionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/XMLTransmissionButton"
+        android:layout_below="@+id/JSONTransmissionButton" />
+
+</RelativeLayout>
