@@ -2,6 +2,7 @@ package com.example.mathieu.sym_labo2;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 
 import org.json.JSONException;
@@ -21,15 +22,21 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         editLastname  = (EditText)findViewById(R.id.lastnameField);
     }
 
-    public void sendJsonPayload() throws JSONException {
-        JSONObject jsonObject = buildJson();
+    public void sendJsonPayload(View view) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = buildJson();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         SymComManager scm = new SymComManager();
         scm.setCommunicationEventListener(
                 new CommunicationEventListener() {
                     @Override
                     public boolean handleServerResponse(String response) {
-                        return false;
+                        System.out.println(response);
+                        return true;
                     }
                 }
         );
