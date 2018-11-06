@@ -23,6 +23,17 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
 
     public void sendJsonPayload() throws JSONException {
         JSONObject jsonObject = buildJson();
+
+        SymComManager scm = new SymComManager();
+        scm.setCommunicationEventListener(
+                new CommunicationEventListener() {
+                    @Override
+                    public boolean handleServerResponse(String response) {
+                        return false;
+                    }
+                }
+        );
+        scm.sendRequest("http://sym.iict.ch/rest/json", jsonObject.toString(), SymComManager.JSON);
     }
 
     public void sendXMLPayload() {
