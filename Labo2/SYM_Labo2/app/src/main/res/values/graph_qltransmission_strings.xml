@@ -1,8 +1,4 @@
 <resources>
-    <string name="app_name">SYM_Labo2</string>
-    <string name="asynchronousTransmission">Asynchronous Transmission</string>
-    <string name="delayedTransmission">Delayed Transmission</string>
-    <string name="graphQLTransmission">GraphQL Transmission</string>
-    <string name="serializedTransmission">Serialized Transmission</string>
-    <string name="compressedTransmission">Compressed Transmission</string>
+    <string name="string1">1. Choix d\'un auteur:</string>
+    <string name="string2">2. Postes de l\'auteur</string>
 </resources>
