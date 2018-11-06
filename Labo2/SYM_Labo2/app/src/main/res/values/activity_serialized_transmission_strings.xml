@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="JSONTransmissionButton">Send JSON payload</string>
+    <string name="XMLTransmissionButton">Send XML payload</string>
+    <string name="firstnameField">Enter your first name</string>
+    <string name="lastnameField">Enter your last name</string>
+
+</resources>

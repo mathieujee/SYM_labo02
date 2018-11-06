@@ -13,8 +13,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void startSerializedTransmission(View view) {
+        Intent intent = new Intent(this, SerializedTransmissionActivity.class);
+        startActivity(intent);
+    }
+
     public void startGraphQLTransmission(View view){
         Intent intent = new Intent(this, GraphQLTransmissionActivity.class);
         startActivity(intent);
     }
 }
+

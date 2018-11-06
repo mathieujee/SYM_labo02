@@ -31,8 +31,9 @@
         android:id="@+id/serializedTransmissionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/serializedTransmission"
-        android:layout_below="@+id/graphQLTransmissionButton"/>
+        android:layout_below="@+id/graphQLTransmissionButton"
+        android:onClick="startSerializedTransmission"
+        android:text="@string/serializedTransmission" />
 
     <Button
         android:id="@+id/compressedTransmissionButton"
