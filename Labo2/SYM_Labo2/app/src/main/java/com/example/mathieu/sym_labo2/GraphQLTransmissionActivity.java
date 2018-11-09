@@ -18,6 +18,7 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_qltransmission);
+        getAuthors();
 
         final Spinner spinner = findViewById(R.id.graphSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, authors);
@@ -40,4 +41,16 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
     }
 
     static String[] authors = new String[]{"Romain", "Oliver", "Jee", "Florent Nicolas Pillou"};
+
+    private void getAuthors(){
+        new AsyncRequest().execute("http://sym.iict.ch/api/graphql", "{\"query\": \"{allAuthors{first_name last_name}}\"}");
+
+        /*
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("query", "{allAuthors{first_name last_name}}");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+    }
 }
