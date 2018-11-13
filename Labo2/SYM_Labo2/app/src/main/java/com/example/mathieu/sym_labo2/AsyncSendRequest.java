@@ -1,13 +1,24 @@
 package com.example.mathieu.sym_labo2;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.os.AsyncTask;
 
-public class AsyncSendRequest extends AppCompatActivity {
+import okhttp3.MediaType;
+
+public class AsyncSendRequest extends AsyncTask<String, Void, String> {
+
+    private CommunicationEventListener com;
+
+    public AsyncSendRequest(CommunicationEventListener com){
+        this.com = com;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_async_send_request);
+    protected String doInBackground(String... params) {
+        SymComManager manager = new SymComManager();
+        manager.setCommunicationEventListener(com);
+
+        manager.sendRequest(params[0], params[1], MediaType.parse(params[2]));
+
+        return "0";
     }
 }
