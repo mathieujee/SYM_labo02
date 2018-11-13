@@ -9,9 +9,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SymComManager {
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public static final MediaType XML = MediaType.parse("application/xml; charset=utf-8");
-    public static final MediaType TEXT = MediaType.parse("plain/text; charset=utf-8");
+    public static final String JSON = "application/json; charset=utf-8";
+    public static final String XML = "application/xml; charset=utf-8";
+    public static final String TEXT = "plain/text; charset=utf-8";
     private final static OkHttpClient client = new OkHttpClient();
     private CommunicationEventListener l;
 
