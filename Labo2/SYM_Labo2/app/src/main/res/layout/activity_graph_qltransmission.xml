@@ -24,6 +24,12 @@
         android:text="@string/string2"
         android:layout_below="@+id/graphText1"
         />
+    <ScrollView
+        android:id="@+id/graphScrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/graphText2"
+        />
 
 
 </RelativeLayout>

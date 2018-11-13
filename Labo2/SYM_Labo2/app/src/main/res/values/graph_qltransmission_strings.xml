@@ -1,4 +1,4 @@
 <resources>
     <string name="string1">1. Choix d\'un auteur:</string>
-    <string name="string2">2. Postes de l\'auteur</string>
+    <string name="string2">2. Postes de l\'auteur\n</string>
 </resources>
