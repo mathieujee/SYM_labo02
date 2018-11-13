@@ -8,7 +8,7 @@ public class AsyncSendRequest extends AsyncTask<String, Void, String> {
 
     private CommunicationEventListener com;
 
-    public void AsyncSendRequest(CommunicationEventListener com){
+    public AsyncSendRequest(CommunicationEventListener com){
         this.com = com;
     }
 
