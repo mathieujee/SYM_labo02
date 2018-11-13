@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,16 +18,26 @@ import java.util.List;
 
 public class GraphQLTransmissionActivity extends AppCompatActivity {
 
+    final String AUTHORS_URL = "{\"query\": \"{allAuthors{first_name last_name}}\"}";
     List<String> authors = new ArrayList<>();
     ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new AsyncAuthors().execute("http://sym.iict.ch/api/graphql", "{\"query\": \"{allAuthors{first_name last_name}}\"}");
+
+        new AsyncSendRequest(new CommunicationEventListener() {
+            @Override
+            public boolean handleServerResponse(String response) {
+                fillAuthors(response);
+                return true;
+            }
+        }).execute("http://sym.iict.ch/api/graphql", AUTHORS_URL, SymComManager.JSON);
+
         setContentView(R.layout.activity_graph_qltransmission);
 
         Spinner spinner = findViewById(R.id.graphSpinner);
+        authors.add("Loading...");
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, authors);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -37,7 +46,9 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
                 new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        int authId = position + 1;
                         Log.e("TAG", adapter.getItem(position));
+                        Log.e("TAG", String.valueOf(authId));
                     }
 
                     @Override
@@ -45,25 +56,6 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
                     }
                 }
         );
-
-    }
-
-    private class AsyncAuthors extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            SymComManager manager = new SymComManager();
-            manager.setCommunicationEventListener(new CommunicationEventListener() {
-                @Override
-                public boolean handleServerResponse(String response) {
-                    fillAuthors(response);
-                    return true;
-                }
-            });
-
-            manager.sendRequest(params[0], params[1], manager.JSON);
-
-            return "123";
-        }
     }
 
     private void fillAuthors(String resp) {
@@ -82,6 +74,7 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    adapter.clear();
                     adapter.addAll(authors);
                     adapter.notifyDataSetChanged();
                 }
