@@ -6,8 +6,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import okhttp3.MediaType;
 
@@ -41,16 +45,39 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
             @Override
             public boolean handleServerResponse(String response) {
                 if (response != null) {
-
-                    return displayServerResponse(response);
+                    try {
+                        return displayServerResponse(new JSONObject(response).toString(2));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 return false;
             }
         }).execute("http://sym.iict.ch/rest/json/", jsonObject.toString(), SymComManager.JSON);
     }
 
-    public void sendXMLPayload() {
+    public void sendXMLPayload(View view) {
+        String payload =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                        "<!DOCTYPE directory SYSTEM \"http://sym.iict.ch/directory.dtd\">\n" +
+                        "<directory>" +
+                        "<person>" +
+                        "<name>name1</name>" +
+                        "<firstname>firstname1</firstname>" +
+                        "<gender></gender>" +
+                        "<phone type='home'>523324234</phone>" +
+                        "</person>" +
+                        "</directory>";
 
+        new AsyncSendRequest(new CommunicationEventListener() {
+            @Override
+            public boolean handleServerResponse(String response) {
+                if (response != null) {
+                    return displayServerResponse(response);
+                }
+                return false;
+            }
+        }).execute("http://sym.iict.ch/rest/xml", payload, SymComManager.XML);
     }
 
     private boolean displayServerResponse(final String response) {
@@ -63,6 +90,12 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         return true;
     }
 
+    private String buildXml(Object o) throws JsonProcessingException {
+        /*XmlMapper xmlMapper = new XmlMapper();
+        return xmlMapper.writeValueAsString(o);*/
+        return "";
+    }
+
     private JSONObject buildJson() throws JSONException {
         JSONObject jsonObject = new JSONObject();
         if (editFirstname != null && editLastname != null) {
@@ -71,5 +104,23 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         }
         jsonObject.accumulate("alo", "coucou");
         return jsonObject;
+    }
+
+    private class Person {
+        private String fullName;
+        private String phoneNumber;
+
+        public Person(String fullName, String phoneNumber) {
+            this.fullName = fullName;
+            this.phoneNumber = phoneNumber;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
     }
 }

@@ -33,12 +33,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/XMLTransmissionButton"
-        android:layout_below="@+id/JSONTransmissionButton" />
+        android:layout_below="@+id/JSONTransmissionButton"
+        android:onClick="sendXMLPayload" />
 
-    <TextView
-        android:id="@+id/SerializedResponseFromServer"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/XMLTransmissionButton"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_below="@+id/XMLTransmissionButton">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stretchColumns="1">
+
+            <TextView
+                android:id="@+id/SerializedResponseFromServer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </TableLayout>
+    </ScrollView>
+
+
 
 </RelativeLayout>
