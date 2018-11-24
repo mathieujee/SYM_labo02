@@ -29,7 +29,19 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         editFirstname = findViewById(R.id.firstnameField);
         editLastname = findViewById(R.id.lastnameField);
         serverResponse = findViewById(R.id.SerializedResponseFromServer);
+        if(savedInstanceState != null){
+            this.editFirstname.setText(savedInstanceState.getString("editFirstname",""));
+            this.editLastname.setText(savedInstanceState.getString("editLastname",""));
+            this.serverResponse.setText(savedInstanceState.getString("serverResponse",""));
+        }
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putString("editFirstname", editFirstname.getText().toString());
+        outState.putString("editLastName", editLastname.getText().toString());
+        outState.putString("serverResponse", serverResponse.getText().toString());
     }
 
     public void sendJsonPayload(View view) {

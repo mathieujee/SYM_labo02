@@ -31,6 +31,6 @@ public class AsyncSendRequest extends AsyncTask<String, Void, String> {
         manager.setCommunicationEventListener(com);
         manager.sendRequest(params[0], params[1], MediaType.parse(params[2]));
 
-        return "0";
+        return "";
     }
 }
