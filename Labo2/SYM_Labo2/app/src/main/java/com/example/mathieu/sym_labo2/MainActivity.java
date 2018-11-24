@@ -22,5 +22,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GraphQLTransmissionActivity.class);
         startActivity(intent);
     }
+
+    public void startAsyncTransmission(View view){
+        Intent intent = new Intent(this, AsyncSendRequestActivity.class);
+        startActivity(intent);
+    }
+
+    public void startDelayTransmission(View view){
+        Intent intent = new Intent(this, DelaySendRequestActivity.class);
+        startActivity(intent);
+    }
 }
 

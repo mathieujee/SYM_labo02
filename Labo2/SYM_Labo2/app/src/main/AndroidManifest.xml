@@ -32,8 +32,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".AsyncSendRequest" />
-        <activity android:name=".DelaySendRequest"></activity>
+        <activity android:name=".AsyncSendRequestActivity" />
+        <activity android:name=".DelaySendRequestActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

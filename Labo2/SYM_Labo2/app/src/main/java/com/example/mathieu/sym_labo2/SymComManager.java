@@ -21,7 +21,7 @@ public class SymComManager {
                 .url(url)
                 .post(body)
                 .build();
-        Response response = null;
+        Response response;
         try {
             response = client.newCall(request).execute();
             if(response != null) {

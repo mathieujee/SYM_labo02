@@ -26,9 +26,9 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serialized_transmission);
 
-        editFirstname = (EditText) findViewById(R.id.firstnameField);
-        editLastname = (EditText) findViewById(R.id.lastnameField);
-        serverResponse = (TextView) findViewById(R.id.SerializedResponseFromServer);
+        editFirstname = findViewById(R.id.firstnameField);
+        editLastname = findViewById(R.id.lastnameField);
+        serverResponse = findViewById(R.id.SerializedResponseFromServer);
 
     }
 
