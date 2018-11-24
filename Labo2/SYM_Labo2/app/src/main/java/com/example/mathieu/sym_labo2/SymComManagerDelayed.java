@@ -38,8 +38,11 @@ public class SymComManagerDelayed extends SymComManager {
             super.sendRequest(url, payload, type);
         }
         else {
-            //si il n'y a pas de requete en attente, on demarre la routine d'execution
-            if(pendingRequestList.size() == 0){
+            PendingRequest pr = new PendingRequest(payload, url, type);
+            pendingRequestList.add(pr);
+            System.out.println(pendingRequestList.size());
+            //si c'est la premiere requete echouée, on demarre la routine d'execution
+            if(pendingRequestList.size() == 1){
                 T.scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
@@ -47,8 +50,6 @@ public class SymComManagerDelayed extends SymComManager {
                     }
                 }, new Date(), MS_BETWEEN_TRIES);
             }
-            PendingRequest pr = new PendingRequest(payload, url, type);
-            pendingRequestList.add(pr);
         }
     }
 
@@ -56,6 +57,7 @@ public class SymComManagerDelayed extends SymComManager {
      * fonction qui essaye d'envoyer les requetes en attente
      */
     public void retry(){
+        System.out.println("retry");
         for(int i = 0; i < pendingRequestList.size(); i++) {
             PendingRequest pr = pendingRequestList.get(i);
 

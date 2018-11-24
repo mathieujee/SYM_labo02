@@ -21,6 +21,17 @@ public class DelaySendRequestActivity extends AppCompatActivity {
         text = findViewById(R.id.textField);
         serverResponse = findViewById(R.id.SerializedResponseFromServer);
         context = getApplicationContext();
+        if(savedInstanceState != null){
+            this.text.setText(savedInstanceState.getString("text",""));
+            this.serverResponse.setText(savedInstanceState.getString("serverResponse",""));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putString("text", text.getText().toString());
+        outState.putString("serverResponse", serverResponse.getText().toString());
     }
 
     public void sendText(View view) {

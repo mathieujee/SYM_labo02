@@ -29,6 +29,7 @@ public class SymComManager {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            l.handleServerResponse("ERROR, the server did not answer to the request");
         }
     }
 
