@@ -43,9 +43,9 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
 
             new AsyncSendRequest(new CommunicationEventListener() {
                 @Override
-                public boolean handleServerResponse(String response) {
-                    authResp = response;
-                    return fillAuthors(response);
+                public boolean handleServerResponse(byte[] response) {
+                    authResp = new String(response);
+                    return fillAuthors(new String(response));
                 }
             }).execute(API_URL, "{\"query\": \"{allAuthors{first_name last_name}}\"}", SymComManager.JSON);
 
@@ -62,8 +62,8 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
                         int authId = position + 1;
                         new AsyncSendRequest(new CommunicationEventListener() {
                             @Override
-                            public boolean handleServerResponse(String response) {
-                                return managePosts(response);
+                            public boolean handleServerResponse(byte[] response) {
+                                return managePosts(new String(response));
                             }
                         }).execute(API_URL, "{\"query\": \"{allPostByAuthor(authorId: " + authId + "){title content}}\"}", SymComManager.JSON);
                     }

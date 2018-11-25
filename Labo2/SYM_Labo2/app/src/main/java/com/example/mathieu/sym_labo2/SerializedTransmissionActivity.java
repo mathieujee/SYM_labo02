@@ -62,10 +62,10 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
 
         new AsyncSendRequest(new CommunicationEventListener() {
             @Override
-            public boolean handleServerResponse(String response) {
+            public boolean handleServerResponse(byte[] response) {
                 if (response != null) {
                     try {
-                        return displayServerResponse(new JSONObject(response).toString(2));
+                        return displayServerResponse(new JSONObject(new String(response)).toString(2));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -81,9 +81,9 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
 
         new AsyncSendRequest(new CommunicationEventListener() {
             @Override
-            public boolean handleServerResponse(String response) {
+            public boolean handleServerResponse(byte[] response) {
                 if (response != null) {
-                    return displayServerResponse(response);
+                    return displayServerResponse(new String(response));
                 }
                 return false;
             }

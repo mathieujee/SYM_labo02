@@ -35,8 +35,8 @@ public class AsyncSendRequestActivity extends AppCompatActivity {
     public void sendText(View view) {
         new AsyncSendRequest(new CommunicationEventListener() {
             @Override
-            public boolean handleServerResponse(String response) {
-                return setResponse(response);
+            public boolean handleServerResponse(byte[] response) {
+                return setResponse(new String(response));
             }
         }).execute("http://sym.iict.ch/rest/txt", text.getText().toString(), SymComManager.TEXT);
     }

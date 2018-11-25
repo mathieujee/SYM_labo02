@@ -52,85 +52,75 @@ public class CompressedTransmissionActivity extends AppCompatActivity {
 
         new AsyncSendRequest(new CommunicationEventListener() {
             @Override
-            public boolean handleServerResponse(String response) {
+            public boolean handleServerResponse(byte[] response) {
                 if (response != null) {
                     return displayServerResponse(response);
                 }
                 return false;
             }
-        }, headers).execute("http://sym.iict.ch/rest/txt", compressedData.toString(), SymComManager.TEXT);
+        }, headers, compressedData).execute("http://sym.iict.ch/rest/txt", SymComManager.TEXT);
     }
 
-    private boolean displayServerResponse(final String response) {
+    private boolean displayServerResponse(final byte[] response) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                receivedData.setText(response);
+                try {
+                    receivedData.setText(new String(decompressData(response)));
+                } catch (DataFormatException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
-        System.out.println(response);
         return true;
     }
 
+    /**
+     * inspiré de https://www.programcreek.com/java-api-examples/java.util.zip.DeflaterOutputStream
+     * @param data
+     * @return
+     * @throws IOException
+     */
     private byte[] compressData(byte[] data) throws IOException {
-        /*final int SIZE = data.length;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(SIZE);
-        byte[] result = null;
-        byte[] buffer = new byte[1024];
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        byte[] ret = new byte[data.length];
 
-        Deflater compresser = new Deflater();
-        compresser.setInput(data);
-        compresser.finish();
 
-        while (!compresser.finished()) {
-            int count = compresser.deflate(buffer);
-            outputStream.write(buffer, 0, count);
+        try {
+            Deflater deflater = new Deflater(Deflater.BEST_COMPRESSION, true);
+            DeflaterOutputStream zip = new DeflaterOutputStream(stream, deflater);
+            zip.write(data);
+            zip.close();
+            deflater.end();
+            ret = stream.toByteArray();
         }
-
-        outputStream.close();
-        result = outputStream.toByteArray();
-
-        return result;*/
-        final int SIZE = data.length;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(SIZE);
-        Deflater compresser = new Deflater();
-        DeflaterOutputStream dOut = new DeflaterOutputStream(outputStream, compresser);
-        dOut.write(data);
-        dOut.close();
-
-        return outputStream.toByteArray();
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ret;
     }
 
-    private byte[] decompressData(byte[] data) throws DataFormatException, IOException {
-        /*final int SIZE = data.length;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(SIZE);
-        byte[] result = null;
-        byte[] buffer = new byte[1024];
-
-        Inflater decompresser = new Inflater();
-        decompresser.setInput(data);
-
-        while(!decompresser.finished()) {
-            int count = decompresser.inflate(buffer);
-            outputStream.write(buffer, 0, count);
+    /**
+     * inspiré de http://www.javased.com/index.php?api=java.util.zip.Inflater
+     * @param data
+     * @return
+     * @throws DataFormatException
+     * @throws IOException
+     */
+    private String decompressData(byte[] data) throws DataFormatException, IOException {
+        Inflater inflater=new Inflater(true);
+        inflater.setInput(data);
+        ByteArrayOutputStream baos=new ByteArrayOutputStream(data.length);
+        byte[] buf=new byte[1024];
+        while (!inflater.finished()) {
+            int count=inflater.inflate(buf);
+            baos.write(buf,0,count);
         }
+        baos.close();
+        return baos.toString();
 
-        outputStream.close();
-        result = outputStream.toByteArray();
-
-        return result;*/
-        final int SIZE = data.length;
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
-        InflaterInputStream in = new InflaterInputStream(inputStream);
-
-        ByteArrayOutputStream bOut = new ByteArrayOutputStream(512);
-        int b;
-        while ((b = in.read()) != -1) {
-            bOut.write(b);
-        }
-        in.close();
-        bOut.close();
-        return bOut.toByteArray();
     }
 
 }

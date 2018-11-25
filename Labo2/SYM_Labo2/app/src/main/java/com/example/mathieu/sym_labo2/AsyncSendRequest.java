@@ -12,30 +12,29 @@ public class AsyncSendRequest extends AsyncTask<String, Void, String> {
     private CommunicationEventListener com;
     private boolean isDelayed = false;
     private List<Pair<String, String>> headers;
+    private byte[] data;
 
-    public AsyncSendRequest(CommunicationEventListener com, boolean isDelayed, List<Pair<String, String>> headers){
+    public AsyncSendRequest(CommunicationEventListener com, boolean isDelayed, List<Pair<String, String>> headers, byte[] data){
         this.com = com;
         this.isDelayed = isDelayed;
         this.headers = headers;
+        this.data = data;
     }
 
-    public AsyncSendRequest(CommunicationEventListener com, List<Pair<String, String>> headers) {
-        this(com, false, headers);
+    public AsyncSendRequest(CommunicationEventListener com, List<Pair<String, String>> headers, byte[] data) {
+        this(com, false, headers, data);
     }
 
     public AsyncSendRequest(CommunicationEventListener com, boolean isDelayed){
-        this(com, isDelayed, null);
+        this(com, isDelayed, null, null);
     }
 
     public AsyncSendRequest(CommunicationEventListener com){
-        this(com, false, null);
+        this(com, false, null, null);
     }
 
     @Override
     protected String doInBackground(String... params) {
-        if(params.length < 3){
-            return null;
-        }
         SymComManager manager;
         if(isDelayed){
             manager = new SymComManagerDelayed();
@@ -49,7 +48,12 @@ public class AsyncSendRequest extends AsyncTask<String, Void, String> {
             manager.sendRequestWithoutHeaders(params[0], params[1], MediaType.parse(params[2]));
         }
         else{
-            manager.sendRequestWithHeaders(params[0], params[1], MediaType.parse(params[2]), headers);
+            if(data != null){
+                manager.sendRequestWithHeaders(params[0], data, MediaType.parse(params[1]), headers);
+            }
+            else {
+                manager.sendRequestWithHeaders(params[0], params[1], MediaType.parse(params[2]), headers);
+            }
         }
         return "";
     }

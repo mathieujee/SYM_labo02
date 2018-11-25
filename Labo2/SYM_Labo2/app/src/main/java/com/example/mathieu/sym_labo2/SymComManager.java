@@ -24,11 +24,24 @@ public class SymComManager {
         try {
             response = client.newCall(request).execute();
             if(response != null) {
-                l.handleServerResponse(response.body().string());
+                l.handleServerResponse(response.body().bytes());
             }
         } catch (IOException e) {
             e.printStackTrace();
-            l.handleServerResponse("ERROR, the server did not answer to the request");
+            l.handleServerResponse("ERROR, the server did not answer to the request".getBytes());
+        }
+    }
+
+    public void sendRequest2(Request request) {
+        Response response;
+        try {
+            response = client.newCall(request).execute();
+            if(response != null) {
+                l.handleServerResponse(response.body().bytes());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            l.handleServerResponse("ERROR, the server did not answer to the request".getBytes());
         }
     }
 
@@ -42,6 +55,20 @@ public class SymComManager {
     }
 
     public void sendRequestWithHeaders(String url, String payload, MediaType type, List<Pair<String, String>> headers) {
+        RequestBody body = RequestBody.create(type, payload);
+        Headers.Builder h = new Headers.Builder();
+        for (int i = 0; i < headers.size(); i++){
+            h.add(headers.get(i).first, headers.get(i).second);
+        }
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .headers(h.build())
+                .build();
+        sendRequest(request);
+    }
+
+    public void sendRequestWithHeaders(String url, byte[] payload, MediaType type, List<Pair<String, String>> headers) {
         RequestBody body = RequestBody.create(type, payload);
         Headers.Builder h = new Headers.Builder();
         for (int i = 0; i < headers.size(); i++){
