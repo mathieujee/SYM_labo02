@@ -66,7 +66,7 @@ c.
 
 ## Transmission compressée
 
-Afin de tester l'efficacité moyenne de la compression *deflate*, nous avons lancé une série de compressions avec différentes tailles de Strings: 
+Afin de tester l'efficacité moyenne de la compression *deflate*, nous avons lancé une série de compressions (fonction de notre laboratoire) avec différentes tailles de Strings: 
 
 ```java
 final int STRING_SIZE = 1000;
