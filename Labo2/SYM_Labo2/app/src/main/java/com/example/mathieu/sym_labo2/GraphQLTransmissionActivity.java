@@ -3,6 +3,7 @@ package com.example.mathieu.sym_labo2;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,25 +24,36 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
     List<String> authors = new ArrayList<>();
     ArrayAdapter<String> adapterSpinner;
     Context context = this;
+    String authResp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new AsyncSendRequest(new CommunicationEventListener() {
-            @Override
-            public boolean handleServerResponse(String response) {
-                return fillAuthors(response);
-            }
-        }).execute(API_URL, "{\"query\": \"{allAuthors{first_name last_name}}\"}", SymComManager.JSON);
-
         setContentView(R.layout.activity_graph_qltransmission);
-
         Spinner spinner = findViewById(R.id.graphSpinner);
-        authors.add("Loading...");
-        adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, authors);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapterSpinner);
+
+        if(savedInstanceState != null){
+            authResp = savedInstanceState.getString("authResp");
+            adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, authors);
+            adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapterSpinner);
+            fillAuthors(authResp);
+        }else {
+
+            new AsyncSendRequest(new CommunicationEventListener() {
+                @Override
+                public boolean handleServerResponse(String response) {
+                    authResp = response;
+                    return fillAuthors(response);
+                }
+            }).execute(API_URL, "{\"query\": \"{allAuthors{first_name last_name}}\"}", SymComManager.JSON);
+
+            authors.add("Loading...");
+            adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, authors);
+            adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapterSpinner);
+        }
 
         spinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
@@ -61,6 +73,12 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putString("authResp", authResp);
     }
 
     private boolean fillAuthors(String resp) {
