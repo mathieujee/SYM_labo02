@@ -66,21 +66,25 @@ c.
 
 ## Transmission compressée
 
-Afin de tester l'efficacité moyenne de la compression *deflfate*, nous avons lancé une série de compressions avec différentes tailles de Strings: 
+Afin de tester l'efficacité moyenne de la compression *deflate*, nous avons lancé une série de compressions avec différentes tailles de Strings: 
 
 ```java
 final int STRING_SIZE = 1000;
-final int N = 100;
+final int N = 10000;
 int totalSize = 0;
 int totalCompressedSize = 0;
 for (int i = 0; i < N; i++) {
 	byte[] array = new byte[STRING_SIZE];
     new Random().nextBytes(array);
-    tring generatedString = new String(array, "UTF-8");
-                compressedData = compressData(generatedString.getBytes("UTF-8"));
-                totalSize += generatedString.getBytes().length;
-                totalCompressedSize += compressedData.length;
-            }
-
+    String generatedString = new String(array, "UTF-8");
+    byte[] compressedData = compressData(generatedString.getBytes("UTF-8"));
+    totalSize += generatedString.getBytes().length;
+    totalCompressedSize += compressedData.length;
+}
 ```
 
+Pour les strings de longueur 100, l'efficacité moyenne de la compression est de 41% (100% équivaut à une compression parfaite: X bytes compressés en 0 byte. Ce niveau de compression est bien entendu impossible à atteindre).
+
+Nous avons également remarqué que la taille du string influence l'efficacité de la compression. Nous avons fait des tests avec une taille maximale de 100'000 caractères. Avec ces paramètre, la note de compression s'améliore: 56%.
+
+Il est donc clair que pour avoir un meilleur rendement avec cet algorithme, il est peu utile de compresser des payloads de petite taille.
