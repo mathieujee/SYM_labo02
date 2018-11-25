@@ -1,3 +1,12 @@
+/**
+ * File : SerializedTransmissionActivity.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 25.11.2018
+ *
+ * This activity allow users to send serialized data with json or xml and display the server response.
+ */
 package com.example.mathieu.sym_labo2;
 
 import android.support.v7.app.AppCompatActivity;

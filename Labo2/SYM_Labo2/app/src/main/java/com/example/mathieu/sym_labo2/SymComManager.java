@@ -1,3 +1,12 @@
+/**
+ * File : SymComManager.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 25.11.2018
+ *
+ * This class is used to send request with okhttp3 library.
+ */
 package com.example.mathieu.sym_labo2;
 
 import android.util.Pair;

@@ -1,3 +1,13 @@
+/**
+ * File : GraphQLTransmissionActivity.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 25.11.2018
+ *
+ * This activity allow users to send graphQL request to a server and display the response.
+ * In our case, we allow user to select an author from a spinner and the app will display all texts linked to that author
+ */
 package com.example.mathieu.sym_labo2;
 
 import android.content.Context;
@@ -18,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraphQLTransmissionActivity extends AppCompatActivity {
+
+    private final static String ALL_AUTHORS_QUERY = "{\"query\": \"{allAuthors{first_name last_name}}\"}";
 
     final String API_URL = "http://sym.iict.ch/api/graphql";
     List<String> authors = new ArrayList<>();
@@ -50,7 +62,7 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
                     authResp = new String(response);
                     return fillAuthors(new String(response));
                 }
-            }).execute(API_URL, "{\"query\": \"{allAuthors{first_name last_name}}\"}", SymComManager.JSON);
+            }).execute(API_URL, ALL_AUTHORS_QUERY, SymComManager.JSON);
 
             // Add a text in the spinner to show the user that the datas are being requested
             authors.add("Loading...");

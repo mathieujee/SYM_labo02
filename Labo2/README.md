@@ -41,11 +41,15 @@ De même, il est possible d'envoyer des requêtes différées dans certain cas. 
 
 ## Threads concurrents
 
-
+Le principal problème que l'on peut rencontrer est que l'on ne contrôle pas l'ordre dans lequel les requêtes vont être traitées, lorsque l'on envoie deux requêtes, on peut très bien recevoir la réponse de la deuxième en premier, ce qui peut être perturbant pour un utilisateur.
 
 ## Ecriture différée
 
+La transmission différée permettra d'alléger l'utilisation du réseau mais ne garantit que les requêtes soient envoyée dans le bon ordre, ce qui peut perturber l'utilisateur, voir générer des erreurs sur le serveur.
 
+
+
+Dans le cas du multiplexage, la consommation de la bande passante sera très grande, mais cela sera plus rapide dans le cas de petite données. Si certaines requêtes sont très volumineuse, cela peut conduire a des timeout des requêtes. Si il y a une erreur, on sera également obligé de tout renvoyer.
 
 ## Transmission d'objets
 

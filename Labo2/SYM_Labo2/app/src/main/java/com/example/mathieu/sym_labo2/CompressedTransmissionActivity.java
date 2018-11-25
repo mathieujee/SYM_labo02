@@ -1,3 +1,13 @@
+/**
+ * File : CompressedTransmissionActivity.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 25.11.2018
+ *
+ * This activity allow users to send compressed texts to a server, to receive a compressed response
+ * and to display it after decompressed it. In our case, the data that is sent is "hello world!"
+ */
 package com.example.mathieu.sym_labo2;
 
 import android.support.v7.app.AppCompatActivity;
