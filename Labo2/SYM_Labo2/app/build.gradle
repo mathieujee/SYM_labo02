@@ -36,4 +36,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.7'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.7'
+    // https://mvnrepository.com/artifact/org.jdom/jdom2
+    implementation group: 'org.jdom', name: 'jdom2', version: '2.0.6'
 }

@@ -9,9 +9,20 @@ import android.widget.TextView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+import org.jdom2.Attribute;
+import org.jdom2.Content;
+import org.jdom2.DocType;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.Text;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+import java.io.IOException;
+import java.io.StringWriter;
 
 import okhttp3.MediaType;
 
@@ -69,18 +80,7 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
     }
 
     public void sendXMLPayload(View view) {
-        String payload =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                        "<!DOCTYPE directory SYSTEM \"http://sym.iict.ch/directory.dtd\">\n" +
-                        "<directory>" +
-                        "<person>" +
-                        "<name>name1</name>" +
-                        "<firstname>firstname1</firstname>" +
-                        "<gender></gender>" +
-                        "<phone type='home'>523324234</phone>" +
-                        "</person>" +
-                        "</directory>";
-
+        String payload = buildXml(new Person(editFirstname.getText().toString(), editLastname.getText().toString()));
         new AsyncSendRequest(new CommunicationEventListener() {
             @Override
             public boolean handleServerResponse(String response) {
@@ -102,10 +102,32 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         return true;
     }
 
-    private String buildXml(Object o) throws JsonProcessingException {
-        /*XmlMapper xmlMapper = new XmlMapper();
-        return xmlMapper.writeValueAsString(o);*/
-        return "";
+    private String buildXml(Person p) {
+        Element directory = new Element("directory");
+        Document doc = new Document(directory);
+        doc.setDocType(new DocType("directory", "http://sym.iict.ch/directory.dtd"));
+
+        Element person = new Element("person");
+        person.addContent(new Element("name").setText(p.getLastName()));
+        person.addContent(new Element("firstname").setText(p.getFirstName()));
+        person.addContent(new Element("gender").setText(p.getGender()));
+        Element phone = new Element("phone");
+        phone.setAttribute(new Attribute("type", p.getPhoneType()));
+        phone.setText(p.getPhoneNumber());
+        person.addContent(phone);
+
+        doc.getRootElement().addContent(person);
+
+        XMLOutputter out = new XMLOutputter();
+        out.setFormat(Format.getPrettyFormat());
+        StringWriter writer = new StringWriter();
+        try {
+            out.output(doc, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return writer.toString();
     }
 
     private JSONObject buildJson() throws JSONException {
@@ -114,21 +136,42 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
             jsonObject.accumulate("firstName", editFirstname.getText().toString());
             jsonObject.accumulate("lastName", editLastname.getText().toString());
         }
-        jsonObject.accumulate("alo", "coucou");
         return jsonObject;
     }
 
     private class Person {
-        private String fullName;
+        private String firstName;
+        private String lastName;
+        private String phoneType;
         private String phoneNumber;
+        private String gender;
 
-        public Person(String fullName, String phoneNumber) {
-            this.fullName = fullName;
+        public Person(String firstname, String lastName, String phoneNumber, String phoneType, String gender) {
+            this.firstName = firstname;
+            this.lastName = lastName;
             this.phoneNumber = phoneNumber;
+            this.phoneType = phoneType;
+            this.gender = gender;
         }
 
-        public String getFullName() {
-            return fullName;
+        public Person(String firstName, String lastName){
+            this(firstName, lastName, "", "home", "");
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public String getPhoneType() {
+            return phoneType;
+        }
+
+        public String getGender() {
+            return gender;
         }
 
         public String getPhoneNumber() {
