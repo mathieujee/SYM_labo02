@@ -19,6 +19,10 @@ public class AsyncSendRequest extends AsyncTask<String, Void, String> {
         this.headers = headers;
     }
 
+    public AsyncSendRequest(CommunicationEventListener com, List<Pair<String, String>> headers) {
+        this(com, false, headers);
+    }
+
     public AsyncSendRequest(CommunicationEventListener com, boolean isDelayed){
         this(com, isDelayed, null);
     }
