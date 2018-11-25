@@ -1,3 +1,14 @@
+/**
+ * File : DelaySendRequestActivity.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 25.11.2018
+ *
+ * This activity allow users to send simple text to a server and to display the server response on the screen.
+ * If for some reasons the request can be treated, it will be re-send every X seconds for X times. The X
+ * are constants in the class.
+ */
 package com.example.mathieu.sym_labo2;
 
 import android.content.Context;

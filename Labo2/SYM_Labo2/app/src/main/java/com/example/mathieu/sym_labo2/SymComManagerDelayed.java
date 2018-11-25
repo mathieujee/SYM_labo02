@@ -1,3 +1,12 @@
+/**
+ * File : SymComManagerDelayed.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 25.11.2018
+ *
+ * This class is used by the delaySendRequest activity in order to delay the request.
+ */
 package com.example.mathieu.sym_labo2;
 
 import android.content.Context;

@@ -1,3 +1,12 @@
+/**
+ * File : AsyncSendRequest.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 25.11.2018
+ *
+ * This class is used to call the symComManager in order to send data
+ */
 package com.example.mathieu.sym_labo2;
 
 import android.os.AsyncTask;
