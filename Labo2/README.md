@@ -57,3 +57,26 @@ b. Ce mécanisme peut être utilisé avec http, il faut cependant s'assurer que 
 Les avantages par rapport à du json ou xml est tout d'abord la retro compatibilité, qui est parfaitement gérée sans être obligé d'écrire une série de test sur la version du document. Ce mécanisme inclut également une validation, et peut être facilement interprété par de nombreux langage notamment dans le cas ou le client et le serveur ne tourne pas sur le même langage. Les limitations de ce genre de protocole, sont qu'il consomme plus de bande passante, il est inutilisable dans certain cas (par exemple si le serveur est codé en javascript)
 
 c. 
+
+
+
+## Transmission compressée
+
+Afin de tester l'efficacité moyenne de la compression *deflfate*, nous avons lancé une série de compressions avec différentes tailles de Strings: 
+
+```java
+final int STRING_SIZE = 1000;
+final int N = 100;
+int totalSize = 0;
+int totalCompressedSize = 0;
+for (int i = 0; i < N; i++) {
+	byte[] array = new byte[STRING_SIZE];
+    new Random().nextBytes(array);
+    tring generatedString = new String(array, "UTF-8");
+                compressedData = compressData(generatedString.getBytes("UTF-8"));
+                totalSize += generatedString.getBytes().length;
+                totalCompressedSize += compressedData.length;
+            }
+
+```
+
