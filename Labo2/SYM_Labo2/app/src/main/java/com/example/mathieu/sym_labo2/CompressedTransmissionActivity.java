@@ -4,23 +4,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Pair;
 import android.widget.TextView;
-
-import org.jdom2.output.XMLOutputter;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
-import java.util.zip.InflaterInputStream;
 
 public class CompressedTransmissionActivity extends AppCompatActivity {
 
@@ -86,7 +77,6 @@ public class CompressedTransmissionActivity extends AppCompatActivity {
     private byte[] compressData(byte[] data) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         byte[] ret = new byte[data.length];
-
 
         try {
             Deflater deflater = new Deflater(Deflater.BEST_COMPRESSION, true);

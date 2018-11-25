@@ -7,11 +7,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.jdom2.Attribute;
-import org.jdom2.Content;
 import org.jdom2.DocType;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.Text;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.json.JSONException;
@@ -19,8 +17,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.StringWriter;
-
-import okhttp3.MediaType;
 
 public class SerializedTransmissionActivity extends AppCompatActivity {
 
