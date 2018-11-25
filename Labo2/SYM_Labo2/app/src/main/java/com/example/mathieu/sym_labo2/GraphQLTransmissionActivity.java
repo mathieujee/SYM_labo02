@@ -33,6 +33,8 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_graph_qltransmission);
         Spinner spinner = findViewById(R.id.graphSpinner);
 
+        // Check if there is a savedInstance that can be restored. If it's the case, get server response
+        // from the bundle, extract the authors' list and update the spinner
         if(savedInstanceState != null){
             authResp = savedInstanceState.getString("authResp");
             adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, authors);
@@ -41,6 +43,8 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
             fillAuthors(authResp);
         }else {
 
+            // Create a new Async request to get all the authors' names from the server.
+            // use the method fillAuthors to fill the spinner with the names
             new AsyncSendRequest(new CommunicationEventListener() {
                 @Override
                 public boolean handleServerResponse(String response) {
@@ -49,6 +53,7 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
                 }
             }).execute(API_URL, "{\"query\": \"{allAuthors{first_name last_name}}\"}", SymComManager.JSON);
 
+            // Add a text in the spinner to show the user that the datas are being requested
             authors.add("Loading...");
             adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, authors);
             adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -56,6 +61,9 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
         }
 
         spinner.setOnItemSelectedListener(
+                // When an author is selected from the spinner, send a request to the server to get
+                // all his posts by using his position in the list as ID.
+                // Give the response to the method managePosts that update the scrollView
                 new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -78,9 +86,12 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
+        // Save the server's response containing all the authors' names
         outState.putString("authResp", authResp);
     }
 
+    // Extract the authors' names from the response string, add them to the adapter then update the
+    // spinner. Return true or false depending on the success or failure of the operation.
     private boolean fillAuthors(String resp) {
         try {
             JSONObject json = new JSONObject(resp);
@@ -110,6 +121,10 @@ public class GraphQLTransmissionActivity extends AppCompatActivity {
         }
     }
 
+    // Format the posts in the response string and add them to the textView.
+    // Once all the posts are treated, add the textView to the scrollView so the posts can be
+    // displayed on screen.
+    //  Return true or false depending on the success or failure of the operation.
     private boolean managePosts(String resp) {
         try {
             JSONObject json = new JSONObject(resp);
