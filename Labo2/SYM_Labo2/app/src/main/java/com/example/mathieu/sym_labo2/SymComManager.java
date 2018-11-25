@@ -5,6 +5,7 @@ import android.util.Pair;
 import java.io.IOException;
 import java.util.List;
 
+import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -18,12 +19,7 @@ public class SymComManager {
     private final static OkHttpClient client = new OkHttpClient();
     private CommunicationEventListener l;
 
-    public void sendRequest(String url, String payload, MediaType type) {
-        RequestBody body = RequestBody.create(type, payload);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
+    public void sendRequest(Request request) {
         Response response;
         try {
             response = client.newCall(request).execute();
@@ -36,25 +32,27 @@ public class SymComManager {
         }
     }
 
-    public void sendRequest(String url, String payload, MediaType type, List<Pair<String, String>> headers) {
+    public void sendRequestWithoutHeaders(String url, String payload, MediaType type) {
         RequestBody body = RequestBody.create(type, payload);
-        Request.Builder requestBuilder = new Request.Builder().url(url);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        sendRequest(request);
+    }
 
-        for(Pair<String, String> header : headers) {
-            requestBuilder.addHeader(header.first, header.second);
+    public void sendRequestWithHeaders(String url, String payload, MediaType type, List<Pair<String, String>> headers) {
+        RequestBody body = RequestBody.create(type, payload);
+        Headers.Builder h = new Headers.Builder();
+        for (int i = 0; i < headers.size(); i++){
+            h.add(headers.get(i).first, headers.get(i).second);
         }
-
-        Request request = requestBuilder.post(body).build();
-
-        Response response = null;
-        try {
-            response = client.newCall(request).execute();
-            if(response != null) {
-                l.handleServerResponse(response.body().string());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .headers(h.build())
+                .build();
+        sendRequest(request);
     }
 
     public void setCommunicationEventListener (CommunicationEventListener l){
