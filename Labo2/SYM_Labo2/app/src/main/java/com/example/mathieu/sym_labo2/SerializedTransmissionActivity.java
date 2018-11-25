@@ -6,19 +6,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.output.XMLOutputter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import okhttp3.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SerializedTransmissionActivity extends AppCompatActivity {
 
-    private EditText editFirstname;
-    private EditText editLastname;
+    private EditText editFirstName;
+    private EditText editLastName;
     private TextView serverResponse;
 
     @Override
@@ -26,9 +26,9 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serialized_transmission);
 
-        editFirstname = (EditText) findViewById(R.id.firstnameField);
-        editLastname = (EditText) findViewById(R.id.lastnameField);
-        serverResponse = (TextView) findViewById(R.id.SerializedResponseFromServer);
+        editFirstName  = findViewById(R.id.firstnameField);
+        editLastName   = findViewById(R.id.lastnameField);
+        serverResponse = findViewById(R.id.SerializedResponseFromServer);
 
     }
 
@@ -39,7 +39,6 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         new AsyncSendRequest(new CommunicationEventListener() {
             @Override
@@ -57,7 +56,7 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
     }
 
     public void sendXMLPayload(View view) {
-        String payload =
+        /*String payload =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                         "<!DOCTYPE directory SYSTEM \"http://sym.iict.ch/directory.dtd\">\n" +
                         "<directory>" +
@@ -67,7 +66,9 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
                         "<gender></gender>" +
                         "<phone type='home'>523324234</phone>" +
                         "</person>" +
-                        "</directory>";
+                        "</directory>";*/
+
+        Document document = buildXml();
 
         new AsyncSendRequest(new CommunicationEventListener() {
             @Override
@@ -77,7 +78,7 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
                 }
                 return false;
             }
-        }).execute("http://sym.iict.ch/rest/xml", payload, SymComManager.XML);
+        }).execute("http://sym.iict.ch/rest/xml/", new XMLOutputter().outputString(document), SymComManager.XML);
     }
 
     private boolean displayServerResponse(final String response) {
@@ -90,37 +91,59 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         return true;
     }
 
-    private String buildXml(Object o) throws JsonProcessingException {
-        /*XmlMapper xmlMapper = new XmlMapper();
-        return xmlMapper.writeValueAsString(o);*/
-        return "";
+    private Document buildXml() {
+        String firstName = editFirstName.getText().toString();
+        String lastName  = editLastName.getText().toString();
+        Person p = new Person(firstName, lastName);
+
+        Element root = new Element("directory");
+        Document document = new Document(root);
+
+        Element person = new Element("person");
+        person.addContent(new Element("name").setText(p.getLastName()));
+        person.addContent(new Element("firstname").setText(p.getFirstName()));
+        person.addContent(new Element("gender").setText(p.getGender()));
+        Element phone = new Element("phone");
+        phone.setAttribute("type", "private");
+        person.addContent(phone.setText(p.getPhoneNumber()));
+
+        root.addContent(person);
+
+        return document;
     }
 
     private JSONObject buildJson() throws JSONException {
         JSONObject jsonObject = new JSONObject();
-        if (editFirstname != null && editLastname != null) {
-            jsonObject.accumulate("firstName", editFirstname.getText().toString());
-            jsonObject.accumulate("lastName", editLastname.getText().toString());
+        if (editFirstName != null && editLastName != null) {
+            jsonObject.accumulate("firstName", editFirstName.getText().toString());
+            jsonObject.accumulate("lastName", editLastName.getText().toString());
         }
-        jsonObject.accumulate("alo", "coucou");
         return jsonObject;
     }
 
     private class Person {
-        private String fullName;
+        private String firstName;
+        private String lastName;
         private String phoneNumber;
+        private String gender;
 
-        public Person(String fullName, String phoneNumber) {
-            this.fullName = fullName;
+        public Person(String firstName, String lastName) {
+            this(firstName, lastName, "neutral" , "000-000-000");
+        }
+
+        public Person(String firstName, String lastName, String gender, String phoneNumber) {
+            this.firstName   = firstName;
+            this.lastName    = lastName;
+            this.gender      = gender;
             this.phoneNumber = phoneNumber;
         }
 
-        public String getFullName() {
-            return fullName;
-        }
+        public String getFirstName() { return firstName; }
 
-        public String getPhoneNumber() {
-            return phoneNumber;
-        }
+        public String getLastName() { return lastName; }
+
+        public String getGender() { return gender; }
+
+        public String getPhoneNumber() { return phoneNumber; }
     }
 }
