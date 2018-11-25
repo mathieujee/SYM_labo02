@@ -93,7 +93,7 @@ public class CompressedTransmissionActivity extends AppCompatActivity {
         return result;*/
         final int SIZE = data.length;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(SIZE);
-        Deflater compresser = new Deflater();
+        Deflater compresser = new Deflater(Deflater.DEFAULT_STRATEGY, true);
         DeflaterOutputStream dOut = new DeflaterOutputStream(outputStream, compresser);
         dOut.write(data);
         dOut.close();
