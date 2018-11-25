@@ -1,6 +1,9 @@
 package com.example.mathieu.sym_labo2;
 
+import android.util.Pair;
+
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -21,6 +24,27 @@ public class SymComManager {
                 .url(url)
                 .post(body)
                 .build();
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            if(response != null) {
+                l.handleServerResponse(response.body().string());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendRequest(String url, String payload, MediaType type, List<Pair<String, String>> headers) {
+        RequestBody body = RequestBody.create(type, payload);
+        Request.Builder requestBuilder = new Request.Builder().url(url);
+
+        for(Pair<String, String> header : headers) {
+            requestBuilder.addHeader(header.first, header.second);
+        }
+
+        Request request = requestBuilder.post(body).build();
+
         Response response = null;
         try {
             response = client.newCall(request).execute();

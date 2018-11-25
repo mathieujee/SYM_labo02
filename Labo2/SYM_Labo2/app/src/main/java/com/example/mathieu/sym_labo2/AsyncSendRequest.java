@@ -1,6 +1,9 @@
 package com.example.mathieu.sym_labo2;
 
 import android.os.AsyncTask;
+import android.util.Pair;
+
+import java.util.List;
 
 import okhttp3.MediaType;
 
@@ -21,4 +24,6 @@ public class AsyncSendRequest extends AsyncTask<String, Void, String> {
 
         return "0";
     }
+
+
 }
