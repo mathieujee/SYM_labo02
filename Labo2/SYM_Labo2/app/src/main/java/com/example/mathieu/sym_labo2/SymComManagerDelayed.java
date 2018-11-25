@@ -33,9 +33,9 @@ public class SymComManagerDelayed extends SymComManager {
         }
     }
 
-    public void sendRequest(String url, String payload, MediaType type) {
+    public void sendRequestWithoutHeaders(String url, String payload, MediaType type) {
         if(isURLReachable(DelaySendRequestActivity.getContext())){
-            super.sendRequest(url, payload, type);
+            super.sendRequestWithoutHeaders(url, payload, type);
         }
         else {
             PendingRequest pr = new PendingRequest(payload, url, type);
@@ -67,7 +67,7 @@ public class SymComManagerDelayed extends SymComManager {
                 if (isURLReachable(DelaySendRequestActivity.getContext())) {
                     pendingRequestList.remove(i);
                     i--;
-                    super.sendRequest(pr.getUrl(), pr.getPayload(), pr.getMediaType());
+                    super.sendRequestWithoutHeaders(pr.getUrl(), pr.getPayload(), pr.getMediaType());
                 } else {
                     pendingRequestList.set(i, pr.incTries());
                 }
