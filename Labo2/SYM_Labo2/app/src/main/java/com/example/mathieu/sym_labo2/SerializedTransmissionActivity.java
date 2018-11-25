@@ -6,14 +6,21 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.jdom2.Attribute;
+import org.jdom2.Content;
+import org.jdom2.DocType;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.Text;
+import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.StringWriter;
+
+import okhttp3.MediaType;
 
 public class SerializedTransmissionActivity extends AppCompatActivity {
 
@@ -26,10 +33,23 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serialized_transmission);
 
-        editFirstName  = findViewById(R.id.firstnameField);
-        editLastName   = findViewById(R.id.lastnameField);
+        editFirstName = findViewById(R.id.firstnameField);
+        editLastName = findViewById(R.id.lastnameField);
         serverResponse = findViewById(R.id.SerializedResponseFromServer);
+        if(savedInstanceState != null){
+            this.editFirstName.setText(savedInstanceState.getString("editFirstname",""));
+            this.editLastName.setText(savedInstanceState.getString("editLastname",""));
+            this.serverResponse.setText(savedInstanceState.getString("serverResponse",""));
+        }
+    }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putString("editFirstname", editFirstName.getText().toString());
+        outState.putString("editLastName", editLastName.getText().toString());
+        outState.putString("serverResponse", serverResponse.getText().toString());
     }
 
     public void sendJsonPayload(View view) {
@@ -56,19 +76,8 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
     }
 
     public void sendXMLPayload(View view) {
-        /*String payload =
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                        "<!DOCTYPE directory SYSTEM \"http://sym.iict.ch/directory.dtd\">\n" +
-                        "<directory>" +
-                        "<person>" +
-                        "<name>name1</name>" +
-                        "<firstname>firstname1</firstname>" +
-                        "<gender></gender>" +
-                        "<phone type='home'>523324234</phone>" +
-                        "</person>" +
-                        "</directory>";*/
 
-        Document document = buildXml();
+        String payload = buildXml(new Person(editFirstName.getText().toString(), editLastName.getText().toString()));
 
         new AsyncSendRequest(new CommunicationEventListener() {
             @Override
@@ -78,7 +87,7 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
                 }
                 return false;
             }
-        }).execute("http://sym.iict.ch/rest/xml/", new XMLOutputter().outputString(document), SymComManager.XML);
+        }).execute("http://sym.iict.ch/rest/xml/", payload, SymComManager.XML);
     }
 
     private boolean displayServerResponse(final String response) {
@@ -91,25 +100,33 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
         return true;
     }
 
-    private Document buildXml() {
-        String firstName = editFirstName.getText().toString();
-        String lastName  = editLastName.getText().toString();
-        Person p = new Person(firstName, lastName);
-
-        Element root = new Element("directory");
-        Document document = new Document(root);
+    private String buildXml(Person p) {
+        Element directory = new Element("directory");
+        Document doc = new Document(directory);
+        doc.setDocType(new DocType("directory", "http://sym.iict.ch/directory.dtd"));
 
         Element person = new Element("person");
         person.addContent(new Element("name").setText(p.getLastName()));
         person.addContent(new Element("firstname").setText(p.getFirstName()));
         person.addContent(new Element("gender").setText(p.getGender()));
         Element phone = new Element("phone");
-        phone.setAttribute("type", "private");
-        person.addContent(phone.setText(p.getPhoneNumber()));
 
-        root.addContent(person);
+        phone.setAttribute(new Attribute("type", p.getPhoneType()));
+        phone.setText(p.getPhoneNumber());
+        person.addContent(phone);
 
-        return document;
+        doc.getRootElement().addContent(person);
+
+        XMLOutputter out = new XMLOutputter();
+        out.setFormat(Format.getPrettyFormat());
+        StringWriter writer = new StringWriter();
+        try {
+            out.output(doc, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return writer.toString();
     }
 
     private JSONObject buildJson() throws JSONException {
@@ -124,26 +141,40 @@ public class SerializedTransmissionActivity extends AppCompatActivity {
     private class Person {
         private String firstName;
         private String lastName;
+        private String phoneType;
         private String phoneNumber;
         private String gender;
 
-        public Person(String firstName, String lastName) {
-            this(firstName, lastName, "neutral" , "000-000-000");
-        }
-
-        public Person(String firstName, String lastName, String gender, String phoneNumber) {
-            this.firstName   = firstName;
-            this.lastName    = lastName;
-            this.gender      = gender;
+        public Person(String firstname, String lastName, String phoneNumber, String phoneType, String gender) {
+            this.firstName = firstname;
+            this.lastName = lastName;
             this.phoneNumber = phoneNumber;
+            this.phoneType = phoneType;
+            this.gender = gender;
         }
 
-        public String getFirstName() { return firstName; }
+        public Person(String firstName, String lastName){
+            this(firstName, lastName, "", "home", "");
+        }
 
-        public String getLastName() { return lastName; }
+        public String getFirstName() {
+            return firstName;
+        }
 
-        public String getGender() { return gender; }
+        public String getLastName() {
+            return lastName;
+        }
 
-        public String getPhoneNumber() { return phoneNumber; }
+        public String getPhoneType() {
+            return phoneType;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
     }
 }

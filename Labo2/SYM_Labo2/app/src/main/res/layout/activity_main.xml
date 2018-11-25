@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/asynchronousTransmission"
+        android:onClick="startAsyncTransmission"
         android:layout_alignParentTop="true"/>
 
     <Button
@@ -17,7 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/delayedTransmission"
-        android:layout_below="@+id/asynchronousTransmissionButton"/>
+        android:layout_below="@+id/asynchronousTransmissionButton"
+        android:onClick="startDelayTransmission"
+        />
 
     <Button
         android:id="@+id/graphQLTransmissionButton"
