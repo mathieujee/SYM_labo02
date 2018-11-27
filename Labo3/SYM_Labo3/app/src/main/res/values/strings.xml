@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SYM_Labo3</string>
+    <string name="NFCScan">NFC scan</string>
+    <string name="barScan">Bar scan</string>
+    <string name="iBeacon">iBeacon detection</string>
+    <string name="compass">Compass</string>
 </resources>

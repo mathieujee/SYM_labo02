@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".IBeaconActivity" />
+        <activity android:name=".NFCScanActivity" />
+        <activity android:name=".BarScanActivity" />
+        <activity android:name=".CompassActivity"></activity>
     </application>
 
 </manifest>
