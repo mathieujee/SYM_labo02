@@ -8,26 +8,29 @@ import android.hardware.SensorManager;
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.RotateAnimation;
 
 public class CompassActivity extends AppCompatActivity implements SensorEventListener {
+
+    // Sources:
+    // https://www.techrepublic.com/article/pro-tip-create-your-own-magnetic-compass-using-androids-internal-sensors/
+    // https://stackoverflow.com/questions/7046608/getrotationmatrix-and-getorientation-tutorial
+    // https://developer.android.com/reference/android/hardware/SensorManager.html
+
 
     //opengl
     private OpenGLRenderer  opglr         = null;
     private GLSurfaceView m3DView         = null;
 
-    private SensorManager senSensorManager;
+    private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private Sensor mMagnetometer;
-    private float[] mLastAccelerometer = new float[3];
-    private float[] mLastMagnetometer = new float[3];
-    private boolean mLastAccelerometerSet = false;
-    private boolean mLastMagnetometerSet = false;
-    private float[] mR = new float[9];
-    private float[] mOrientation = new float[3];
-    private float mCurrentDegree = 0f;
+
+    private float[] mGravs = new float[3];
+    private float[] mGeoMags = new float[3];
+    private float[] mRotationM = new float[16];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,39 +52,42 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
         //init opengl surface view
         this.m3DView.setRenderer(this.opglr);
 
-        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mMagnetometer = senSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }
 
-    // When the app hibernate, we unregistor the sensor
+    // When the app hibernate, we unregister the sensor
     protected void onPause(){
         super.onPause();
-        senSensorManager.unregisterListener(this, mAccelerometer);
-        senSensorManager.unregisterListener(this, mMagnetometer);
+        mSensorManager.unregisterListener(this, mAccelerometer);
+        mSensorManager.unregisterListener(this, mMagnetometer);
     }
 
     // When the app resume, we register the sensor again
     protected void onResume(){
         super.onResume();
-        senSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
-        senSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if(event.sensor == mAccelerometer){
-            System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.length);
-            mLastAccelerometerSet = true;
-        }else if(event.sensor == mMagnetometer){
-            System.arraycopy(event.values, 0, mLastMagnetometer, 0, event.values.length);
-            mLastMagnetometerSet = true;
+            mGravs[0] = event.values[0];
+            mGravs[1] = event.values[1];
+            mGravs[2] = event.values[2];
+
         }
 
-        if (mLastAccelerometerSet && mLastMagnetometerSet) {
-            SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer);
-            SensorManager.getOrientation(mR, mOrientation);
-            this.opglr.swapRotMatrix(mR);
+        if(event.sensor == mMagnetometer){
+            mGeoMags[0] = event.values[0];
+            mGeoMags[1] = event.values[1];
+            mGeoMags[2] = event.values[2];
+        }
+
+        if(SensorManager.getRotationMatrix(mRotationM, null, mGravs, mGeoMags)){
+            mRotationM = this.opglr.swapRotMatrix(mRotationM);
         }
     }
 
@@ -89,13 +95,4 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
-    /* TODO */
-    // your activity need to register accelerometer and magnetometer sensors' updates
-    // then you may want to call
-    //  this.opglr.swapRotMatrix()
-    // with the 4x4 rotation matrix, everytime a new matrix is computed
-    // more information on rotation matrix can be found on-line:
-    // https://developer.android.com/reference/android/hardware/SensorManager.html#getRotationMatrix(float[],%20float[],%20float[],%20float[])
-
 }
