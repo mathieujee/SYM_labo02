@@ -1,15 +1,16 @@
 package com.example.olivier.sym_labo3;
 
+import android.hardware.SensorEventListener;
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class CompassActivity extends AppCompatActivity {
+public class CompassActivity extends AppCompatActivity /*implements SensorEventListener*/ {
 
     //opengl
-    private OpenGLRenderer  opglr           = null;
+    private OpenGLRenderer  opglr         = null;
     private GLSurfaceView m3DView         = null;
 
     @Override
