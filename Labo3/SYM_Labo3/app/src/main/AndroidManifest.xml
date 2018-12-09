@@ -28,11 +28,13 @@
         <activity android:name=".IBeaconActivity" />
         <activity android:name=".NFCScanActivity" />
         <activity android:name=".BarScanActivity" />
-        <activity android:name=".CompassActivity" />
 
-        <activity android:name=".NFCSCanHomePageActivity">
+        <activity android:name=".CompassActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
 
-        </activity>
+        <activity android:name=".NFCSCanHomePageActivity" />
+
     </application>
 
     <uses-feature android:name="android.hardware.nfc" android:required="true" />

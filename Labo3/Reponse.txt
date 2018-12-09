@@ -1,0 +1,1 @@
+Le problème du tremblement vient probablement du nombre de mises à jour par secondes que notre application effectue. En augmentant ce nombre, le mouvement de la flèche paraitera beaucoup plus régulier au prix d'une consomation de ressources plus élevée sur le téléphone.
