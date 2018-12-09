@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.olivier.sym_labo3">
 
+    <uses-permission android:name="android.permission.NFC" />
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -10,18 +11,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
         </activity>
         <activity android:name=".IBeaconActivity" />
         <activity android:name=".NFCScanActivity" />
         <activity android:name=".BarScanActivity" />
         <activity android:name=".CompassActivity" />
-        <activity android:name=".NFCSCanHomePageActivity"></activity>
+
+        <activity android:name=".NFCSCanHomePageActivity">
+
+        </activity>
     </application>
 
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
 </manifest>
