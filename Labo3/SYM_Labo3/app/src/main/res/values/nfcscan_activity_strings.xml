@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="buttonLogin">Login</string>
+    <string name="usernameHint">Enter your username</string>
+    <string name="passwordHint">Enter your passowrd</string>
+    <string name="nfcDetectionFalse">No NFC tag detected</string>
+    <string name="nfcDetectionTrue">NFC tag detected</string>
+    <string name="loginFailed">Your username or password is invalid</string>
+</resources>
