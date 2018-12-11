@@ -49,6 +49,12 @@ public class IBeaconActivity extends AppCompatActivity implements BeaconConsumer
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        beaconManager.unbind(this);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onBeaconServiceConnect() {
         beaconManager.addRangeNotifier(new RangeNotifier() {
             @Override

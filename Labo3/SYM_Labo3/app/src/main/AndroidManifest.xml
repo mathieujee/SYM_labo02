@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,15 +30,15 @@
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
-        <activity android:name=".IBeaconActivity" />
-        <activity android:name=".NFCScanActivity" />
-        <activity android:name=".BarScanActivity" />
+        <activity android:name=".IBeaconActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".NFCScanActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".BarScanActivity" android:screenOrientation="portrait"/>
 
         <activity android:name=".CompassActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".NFCSCanHomePageActivity" />
+        <activity android:name=".NFCSCanHomePageActivity" android:screenOrientation="portrait"/>
 
     </application>
 
