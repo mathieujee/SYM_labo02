@@ -25,15 +25,23 @@
         android:inputType="textPassword"
         android:layout_below="@id/username"/>
 
+    <ImageView
+        android:id="@+id/nfcImage"
+        android:layout_width="96dp"
+        android:layout_height="64dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="30dp"
+        android:src="@drawable/no_nfc_detected"
+        android:layout_below="@id/password"/>
+
     <TextView
         android:id="@+id/nfc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginVertical="30dp"
-        android:layout_below="@id/password"
-        android:text="@string/nfcDetectionFalse"
-        android:textColor="@color/zxing_viewfinder_laser"/>
+        android:layout_marginVertical="0dp"
+        android:layout_below="@id/nfcImage"
+        android:text="@string/nfcDetectionFalse"/>
 
     <Button
         android:id="@+id/loginButton"
@@ -43,15 +51,5 @@
         android:text="@string/buttonLogin"
         android:layout_marginVertical="30dp"
         android:layout_centerHorizontal="true"/>
-
-    <!--TODO: REMOVE DA SHIT -->
-    <TextView
-        android:id="@+id/testNFC"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/loginButton"
-        android:text="NO DATA"
-        android:layout_centerHorizontal="true"
-        />
 
 </RelativeLayout>

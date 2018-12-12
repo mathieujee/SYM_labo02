@@ -5,12 +5,14 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,21 +33,23 @@ public class NFCScanActivity extends AppCompatActivity {
 
     private EditText usernameEditText = null;
     private EditText passwordEditText = null;
+    private ImageView nfcDetectedImage = null;
     private TextView nfcDetectedText = null;
     private Button loginButton = null;
 
-    // TODO: remove this (test purpose only)
-    private TextView testNFC = null;
-
     private boolean nfcDetected = false;
+    private String nfcData = null;
+
+    private int seconds;
 
     private static final String[] permissionsNeeded = {Manifest.permission.NFC};
 
     // Hard coded credentials (Only for exercise purpose)
     private final String CREDENTIAL_USERNAME = "toto";
     private final String CREDENTIAL_PASSWORD = "tata";
-    private final String CREDENTIAL_NFC_TAG  = "xxxx";
+    private final String CREDENTIAL_NFC_TAG  = "jeeeeeeeeeeeeee";
 
+    private final int NFC_TIMER = 30;
     public static final String TAG = "NfcDemo";
 
     private NfcAdapter mNfcAdapter;
@@ -58,11 +63,12 @@ public class NFCScanActivity extends AppCompatActivity {
 
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
+        nfcDetectedImage = findViewById(R.id.nfcImage);
         loginButton = findViewById(R.id.loginButton);
         nfcDetectedText = findViewById(R.id.nfc);
+        nfcDetectedText.setTextColor(Color.RED);
 
-        // todo: for tests purpose only, remove da shit
-        testNFC = findViewById(R.id.testNFC);
+        seconds = NFC_TIMER;
 
         // listener for loginButton
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -79,10 +85,13 @@ public class NFCScanActivity extends AppCompatActivity {
                 }
 
                 // verify username / password / NFC tag
-                if (!checkCredentials(username, password)) {
+                if (!checkCredentials(username, password, nfcData)) {
                     Toast.makeText(NFCScanActivity.this, getResources().getString(R.string.loginFailed), Toast.LENGTH_LONG).show();
                     return;
                 }
+
+                Intent intent = new Intent(NFCScanActivity.this, NFCSCanHomePageActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -198,20 +207,18 @@ public class NFCScanActivity extends AppCompatActivity {
 
             // Get text
             String textData = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);;
-            System.out.println("Text Data = " + textData);
             return textData;
         }
 
         @Override
         protected void onPostExecute(String result) {
-            System.out.println("In onPostExecute()");
             if (result != null) {
-                System.out.println("Yeeees (onPostExecute");
                 nfcDetectedText.setText(R.string.nfcDetectionTrue);
-                nfcDetectedText.setTextColor(0x38A445); // Green
-
-                System.out.println("NFC = " + result);
-                // check nfc
+                nfcDetectedText.setTextColor(Color.GREEN);
+                nfcDetectedImage.setImageDrawable(getResources().getDrawable(R.drawable.nfc_detected));
+                nfcData = result;
+                nfcDetected = true;
+                timer();
             }
         }
     }
@@ -242,8 +249,8 @@ public class NFCScanActivity extends AppCompatActivity {
             mNfcAdapter.disableForegroundDispatch(this);
     }
 
-    private boolean checkCredentials(String username, String password) {
-        if (username.equals(CREDENTIAL_USERNAME) && password.equals(CREDENTIAL_PASSWORD)) {
+    private boolean checkCredentials(String username, String password, String nfcData) {
+        if (username.equals(CREDENTIAL_USERNAME) && password.equals(CREDENTIAL_PASSWORD) && nfcData.equals(CREDENTIAL_NFC_TAG)) {
             return true;
         }
         return false;
@@ -267,5 +274,27 @@ public class NFCScanActivity extends AppCompatActivity {
             permissionsToAsk[i] = permissionsNotGranted.get(i);
         }
         ActivityCompat.requestPermissions(this, permissionsToAsk, 1);
+    }
+
+    private void timer() {
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if(seconds > 0) {
+                    seconds--;
+                    handler.postDelayed(this, 1000);
+                }
+                else {
+                    // Timer over => reset nfc data
+                    nfcData = null;
+                    seconds = NFC_TIMER;
+                    nfcDetectedImage.setImageDrawable(getResources().getDrawable(R.drawable.no_nfc_detected));
+                    nfcDetectedText.setText(R.string.nfcDetectionFalse);
+                    nfcDetectedText.setTextColor(Color.RED);
+                    nfcDetected = false;
+                }
+            }
+        });
     }
 }

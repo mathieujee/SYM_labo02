@@ -7,22 +7,33 @@
     tools:context=".NFCSCanHomePageActivity">
 
     <Button
+        android:id="@+id/maxSecurityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text=""/>
+        android:text="@string/maxSecurity"
+        android:onClick="executeMaxSecurity"
+        android:layout_marginVertical="25dp"
+        android:layout_above="@id/mediumSecurityButton"/>
 
     <Button
+        android:id="@+id/mediumSecurityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:text=""/>
+        android:layout_marginVertical="25dp"
+        android:onClick="executeMediumSecurity"
+        android:text="@string/mediumSecurity" />
 
     <Button
+        android:id="@+id/lowSecurityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text=""/>
+        android:text="@string/lowSecurity"
+        android:onClick="executeLowSecurity"
+        android:layout_marginVertical="25dp"
+        android:layout_below="@id/mediumSecurityButton"/>
 
 </RelativeLayout>

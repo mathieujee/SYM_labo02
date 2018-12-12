@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="maxSecurity">MAX SECURITY</string>
+    <string name="mediumSecurity">MEDIUM SECURITY</string>
+    <string name="lowSecurity">LOW SECURITY</string>
+    <string name="maxSecurityMessageYes">Max security action authorized</string>
+    <string name="maxSecurityMessageNo">Max security action unauthorized (try to use your NFC tag again)</string>
+    <string name="mediumSecurityMessageYes">Medium security action authorized</string>
+    <string name="mediumSecurityMessageNo">Medium security action unauthorized (try to use your NFC tag again)</string>
+    <string name="lowSecurityMessageYes">Low security action authorized</string>
+    <string name="lowSecurityMessageNo">Low security action unauthorized (try to use your NFC tag again)</string>
+</resources>
