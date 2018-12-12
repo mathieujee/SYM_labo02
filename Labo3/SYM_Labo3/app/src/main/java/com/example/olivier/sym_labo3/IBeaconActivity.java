@@ -20,7 +20,6 @@ import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 
 public class IBeaconActivity extends AppCompatActivity implements BeaconConsumer {
-    protected static final String TAG = "IBeacon activity";
     private BeaconManager beaconManager;
     private List<String> beaconsInfos = new ArrayList<>();
     private ListView listView = null;
@@ -69,7 +68,6 @@ public class IBeaconActivity extends AppCompatActivity implements BeaconConsumer
         try {
             beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
         } catch (RemoteException e) {
-            Log.e(TAG, e.getMessage());
         }
     }
 
