@@ -2,9 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.olivier.sym_labo3">
 
-    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="17" />
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="17" />
+
     <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,8 +24,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".MainActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,24 +34,34 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
+
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
-        <activity android:name=".IBeaconActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".NFCScanActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".BarScanActivity" android:screenOrientation="portrait"/>
-
-        <activity android:name=".CompassActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+        <activity
+            android:name=".IBeaconActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".NFCSCanHomePageActivity" android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".NFCScanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BarScanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CompassActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NFCSCanHomePageActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PreBarScanActivity" />
+        <activity android:name=".BarScanResultActivity"></activity>
     </application>
-
 
 </manifest>

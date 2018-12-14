@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startBarScan(View view) {
-        Intent intent = new Intent(this, BarScanActivity.class);
+    public void startPreBarScan(View view) {
+        Intent intent = new Intent(this, PreBarScanActivity.class);
         startActivity(intent);
     }
 
