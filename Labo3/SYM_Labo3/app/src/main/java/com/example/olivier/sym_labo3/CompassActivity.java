@@ -1,6 +1,15 @@
+/**
+ * File : CompassActivity.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 16.12.2018
+ *
+ * This activity display on the screen a compass that show where the north is.
+ */
+
 package com.example.olivier.sym_labo3;
 
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -8,7 +17,6 @@ import android.hardware.SensorManager;
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -60,8 +68,7 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     // When the app hibernate, we unregister the sensor
     protected void onPause(){
         super.onPause();
-        mSensorManager.unregisterListener(this, mAccelerometer);
-        mSensorManager.unregisterListener(this, mMagnetometer);
+        mSensorManager.unregisterListener(this);
     }
 
     // When the app resume, we register the sensor again
@@ -74,16 +81,11 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     @Override
     public void onSensorChanged(SensorEvent event) {
         if(event.sensor == mAccelerometer){
-            mGravs[0] = event.values[0];
-            mGravs[1] = event.values[1];
-            mGravs[2] = event.values[2];
-
+            mGravs = event.values.clone();
         }
 
         if(event.sensor == mMagnetometer){
-            mGeoMags[0] = event.values[0];
-            mGeoMags[1] = event.values[1];
-            mGeoMags[2] = event.values[2];
+            mGeoMags = event.values.clone();
         }
 
         if(SensorManager.getRotationMatrix(mRotationM, null, mGravs, mGeoMags)){

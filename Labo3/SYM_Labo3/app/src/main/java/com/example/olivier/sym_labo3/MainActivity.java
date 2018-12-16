@@ -3,7 +3,7 @@
  *
  * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
  *
- * Date : 25.11.2018
+ * Date : 16.12.2018
  *
  * This is the main activity that allows users to navigate between the other 5 activities
  */
