@@ -1,6 +1,13 @@
+/**
+ * File : BarScanResultActivity.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 16.12.2018
+ *
+ */
 package com.example.olivier.sym_labo3;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -20,11 +27,4 @@ public class BarScanResultActivity extends AppCompatActivity {
 
         scanResultText.setText(result);
     }
-
-    /*@Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Intent intent = new Intent(this, PreBarScanActivity.class);
-        startActivity(intent);
-    }*/
 }

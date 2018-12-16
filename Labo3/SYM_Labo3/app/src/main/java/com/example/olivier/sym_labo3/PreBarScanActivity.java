@@ -1,3 +1,12 @@
+/**
+ * File : PreBarScanActivity.java
+ *
+ * Authors : Jee Mathieu, Kopp Olivier, Silvestri Romain
+ *
+ * Date : 16.12.2018
+ *
+ */
+
 package com.example.olivier.sym_labo3;
 
 import android.Manifest;
