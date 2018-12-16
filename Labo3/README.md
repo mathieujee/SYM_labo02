@@ -41,5 +41,9 @@ Voici quelque exemple d'utilisation qui peuvent être intéressante a implément
 ### Une fois la manipulation effectuée, vous constaterez que les animations de la flèche ne sont pas fluides, il va y avoir un tremblement plus ou moins important même si le téléphone ne bouge pas.
 
 ### Veuillez expliquer quelle est la cause la plus probable de ce tremblement et donner une manière (sans forcément l’implémenter) d’y remédier.
-Le problème du tremblement vient probablement du nombre de mises à jour par secondes que notre application effectue. En augmentant ce nombre, le mouvement de la flèche paraitera beaucoup plus régulier au prix d'une consomation de ressources plus élevée.
-Un autre problème est la sensibilité des capteurs du téléphone qui sont perturbés très facilement par l'environnement. La solution serait d'améliorer les capteurs.
+Le problème du tremblement vient probablement du nombre de mises à jour par secondes que notre application effectue. En augmentant ce nombre, le mouvement de la flèche paraitera beaucoup plus régulier au prix d'une consomation de ressources plus élevée. Il faut aussi tenir compte du taux de rafraichissement des capteurs. L'idéal serait de synchroniser le taux de l'écran avec celui des capteurs ce qui augmenterait la fluidité des mouvements de la flèche.  
+Un autre problème est la sensibilité des capteurs du téléphone:  
+- Le magnétomètre est très sensible à l'environnement. En effet, si quelque chose autour de lui génére un champs magnétique, la précision de la boussole sera alors impactée.
+- L'acceléromètre détecte du mouvement en permance même si le téléphone ne bouge pas. La moindre vibration de son support est detecté ce qui a pour effet de modifier la flèche en permanance d'où la sensation de tremblement.
+
+Dans ces deux cas, une amèlioration des capteurs du téléphone permet de réduire le tremblement et d'améliorer la précision de la flèche.
