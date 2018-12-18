@@ -5,6 +5,7 @@
  *
  * Date : 16.12.2018
  *
+ * This activity chow the result of a scan
  */
 package com.example.olivier.sym_labo3;
 

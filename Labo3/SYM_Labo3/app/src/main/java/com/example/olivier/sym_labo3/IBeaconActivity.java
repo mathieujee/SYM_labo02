@@ -5,13 +5,15 @@
  *
  * Date : 16.12.2018
  *
+ * This activity allows the user to see all the beacon in the area.
+ * It detect certain type of beacon ( m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24 )
+ *
  */
 
 package com.example.olivier.sym_labo3;
 
 import android.content.Context;
 import android.os.RemoteException;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 

@@ -5,14 +5,13 @@
  *
  * Date : 16.12.2018
  *
+ * This activity allows users to scan bar code or QR code
  */
 
 package com.example.olivier.sym_labo3;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -20,8 +19,6 @@ import android.widget.Toast;
 import com.example.olivier.sym_labo3.utils.PermissionUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
-import java.util.ArrayList;
 
 public class BarScanActivity extends AppCompatActivity {
 
